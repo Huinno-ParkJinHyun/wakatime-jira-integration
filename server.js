@@ -70,7 +70,7 @@ app.post('/api/submit-config', async (req, res) => {
     // 데이터 처리 로직
     for (const work of wakatimeData.data) {
       if (work.branch) {
-        const match = work.branch.match(/\/mc-(\d+)/i);
+        const match = new RegExp(`\\/${projectKey}-(\\d+)`, 'i');
         if (match) {
           const ticketNumber = match[0];
           if (!branchDurations[ticketNumber]) {
