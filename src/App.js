@@ -20,12 +20,11 @@ function App() {
         };
   });
 
-  // React 컴포넌트 내부
-  // const [serverResponse, setServerResponse] = useState({
-  //   messages: [],
-  //   branchDurations: {},
-  //   totalWorkTime: '',
-  // });
+  const [serverResponse, setServerResponse] = useState({
+    messages: [],
+    branchDurations: {},
+    totalWorkTime: '',
+  });
 
   useEffect(() => {
     // 설정이 변경될 때마다 로컬 스토리지에 저장
@@ -41,31 +40,39 @@ function App() {
     try {
       await axios.post('/api/save-config', config);
       alert('설정이 저장되었습니다. 매일밤 23시 50분에 자동으로 실행됩니다.');
-      // const response = await axios.post('/api/submit-config', config);
-      // setServerResponse({
-      //   messages: response.data.messages,
-      //   branchDurations: response.data.branchDurations,
-      //   totalWorkTime: response.data.totalWorkTime,
-      // });
     } catch (error) {
       alert('[서버에러] 콘솔창에서 에러를 확인해주세요');
       console.error('Error submitting config:', error);
     }
   };
 
-  // const existServerResponse =
-  //   serverResponse.messages.length > 0 ||
-  //   Object.keys(serverResponse.branchDurations).length > 0 ||
-  //   serverResponse.totalWorkTime;
+  const 수동실행 = async e => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/api/submit-config', config);
+      alert('작업시간이 저장되었습니다.');
+      console.log(1);
+      setServerResponse({
+        messages: response.data.messages,
+        branchDurations: response.data.branchDurations,
+        totalWorkTime: response.data.totalWorkTime,
+      });
+    } catch (error) {
+      alert('[서버에러] 콘솔창에서 에러를 확인해주세요');
+      console.error('Error submitting config:', error);
+    }
+  };
+
+  const existServerResponse =
+    serverResponse.messages.length > 0 ||
+    Object.keys(serverResponse.branchDurations).length > 0 ||
+    serverResponse.totalWorkTime;
 
   return (
     <div className="container">
       <h1>작업시간 측정기</h1>
       <form onSubmit={handleSubmit} className="form">
         <div className="form-group">
-          <label>조회하고 싶은 날짜</label>
-          <input type="text" name="today" value={config.today} onChange={handleInputChange} required />
-
           <label>WakaTime API Key</label>
           <input
             type="text"
@@ -100,7 +107,19 @@ function App() {
         </button>
       </form>
 
-      {/* {existServerResponse && (
+      <div className="manual">
+        <h2> 수동 업데이트 </h2>
+        <form onSubmit={수동실행} className="form">
+          <label>조회하고 싶은 날짜</label>
+          <input type="text" name="today" value={config.today} onChange={handleInputChange} required />
+
+          <button type="submit" className="submit-button">
+            수동실행
+          </button>
+        </form>
+      </div>
+
+      {existServerResponse && (
         <div>
           <h2>Server Response</h2>
           <div>
@@ -124,7 +143,7 @@ function App() {
             <p>{serverResponse.totalWorkTime}</p>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

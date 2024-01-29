@@ -82,3 +82,7 @@ input {
 .submit-button:hover {
   background-color: #0056b3;
 }
+
+.manual {
+  margin-top: 50px;
+}
