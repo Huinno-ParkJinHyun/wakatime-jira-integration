@@ -14,7 +14,7 @@ const sendmail = require('sendmail')();
 
 const settingPath = path.join(__dirname, 'setting');
 
-const cronJobTime = '50 11 * * *'; // 매일 밤 11시 50분에 실행되는 작업
+const cronJobTime = '50 23 * * *'; // 매일 23시 50분에 실행되는 작업
 const projectKey = 'mc';
 
 app.use(bodyParser.json());
