@@ -229,7 +229,7 @@ cron.schedule(cronJobTime, async () => {
 
 // pmset
 exec(
-  `sudo pmset repeat wakeorpoweron MTWRF ${subtractSecondsFromCronTime(cronJobTime, 5)}`,
+  `sudo pmset repeat wakeorpoweron MTWRF ${subtractSecondsFromCronJobTime(cronJobTime, 5)}`,
   (error, stdout, stderr) => {
     if (error) {
       console.error(`Error: ${error.message}`);
@@ -239,15 +239,16 @@ exec(
       console.error(`Stderr: ${stderr}`);
       return;
     }
+    // 명령 실행 완료 후 메시지 출력
+    console.log('비밀번호 입력 완료');
+    console.log(
+      `이 서버가 꺼지지 않는다면 매일 ${convertCronJobTimeToFormattedTime(cronJobTime)} 에 작업시간 로깅이 진행됩니다.`
+    );
   }
 );
 
-function subtractSecondsFromCronTime(cronTime, secondsToSubtract) {
-  // Cron 시간을 분과 시간으로 분할
-  const [minutes, hours] = cronTime.split(' ');
-
-  // 시간과 분을 가져와서 "00:00:00" 형식으로 변환
-  const hhmmss = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+function subtractSecondsFromCronJobTime(cronJobTime, secondsToSubtract) {
+  const hhmmss = convertCronJobTimeToFormattedTime(cronJobTime);
 
   // 시간 문자열을 파싱하여 시, 분, 초를 추출
   const [oldHours, oldMinutes, oldSeconds] = hhmmss.split(':').map(Number);
@@ -272,6 +273,15 @@ function subtractSecondsFromCronTime(cronTime, secondsToSubtract) {
   return newTimeString;
 }
 
+function convertCronJobTimeToFormattedTime(cronTime) {
+  // Cron 시간을 분과 시간으로 분할
+  const [minutes, hours] = cronTime.split(' ');
+
+  // 시간과 분을 가져와서 "00:00:00" 형식으로 변환
+  const hhmmss = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}:00`;
+
+  return hhmmss;
+}
 /**
  * 필요한 리팩토링
  * 1. pmset이 보장되어 있는 것은 아니기 때문에, github action에서  Cronjob을 실행하도록 변경
