@@ -32,7 +32,7 @@ npm install
 npm run start
 ```
 
-5. Start the server:
+5. Start the server with another terminal:
 
 ```shell
 node server.js
@@ -50,6 +50,7 @@ node server.js
 
 1. The battery must have sufficient charge at 23:50 (not in power-saving mode).
 2. The Mac should not be completely turned off at 23:50.
+3. The Local server must always be turned on.
 
 ## API Tokens
 
@@ -92,6 +93,12 @@ npm install
 npm run start
 ```
 
+5. 터미널을 새로 열고, 아래 명령어를 입력하여 서버를 실행합니다.
+
+```shell
+node server.js
+```
+
 6. 터미널에서 요청 시 `시스템 비밀번호(맥 잠금 화면)`를 입력합니다.
 
 7. 웹 브라우저에서 제공된 URL을 열고 필요한 환경 변수를 입력합니다. (base : localhost:3000)
@@ -104,6 +111,7 @@ npm run start
 
 1. 23:50에 배터리 충전이 충분해야 합니다(절전 모드 아님).
 2. 23:50에 맥이 완전히 꺼져 있으면 안됩니다.
+3. Local Server가 항상 켜져 있어야 합니다.
 
 ## API 토큰
 
