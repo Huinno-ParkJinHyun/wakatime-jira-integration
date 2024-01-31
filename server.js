@@ -147,7 +147,7 @@ function appendLog(message, project, jiraUsername) {
         from: 'todaysWorkTime@today.com',
         to: jiraUsername,
         subject: `${project} 작업시간 기록 완료`,
-        html: message,
+        html: message.split('\n').join('<br/>'),
       },
       function (err, reply) {
         // console.log(err && err.stack);
@@ -177,7 +177,7 @@ function onWorkCompleted(branchDurations, totalWorkTime, project, assigneeMessag
   logMessages.push(`오늘 총 작업시간 (분단위): ${totalWorkTime}`);
 
   // 로그 파일에 추가
-  appendLog(logMessages.join('<br/>'), project, jiraUsername);
+  appendLog(logMessages.join('\n'), project, jiraUsername);
 }
 
 function getCurrentDateInKorea() {
