@@ -21,6 +21,7 @@ app.use(bodyParser.json());
 
 app.post('/api/save-config', (req, res) => {
   const configData = req.body;
+  delete req.body?.today;
   const { projects } = configData;
   const projectArray = projects.replace(/\s/g, '').split(',');
 
@@ -70,7 +71,8 @@ app.post('/api/submit-config', async (req, res) => {
     // 데이터 처리 로직
     for (const work of wakatimeData.data) {
       if (work.branch) {
-        const match = new RegExp(`\\/${projectKey}-(\\d+)`, 'i');
+        const projectMatchKey = new RegExp(`\\/${projectKey}-(\\d+)`, 'i');
+        const match = work.branch.match(projectMatchKey);
         if (match) {
           const ticketNumber = match[0];
           if (!branchDurations[ticketNumber]) {
@@ -93,7 +95,6 @@ app.post('/api/submit-config', async (req, res) => {
         );
         continue;
       }
-
       await jira.issue.addWorkLog({
         issueKey: ticket.key,
         worklog: {
@@ -112,6 +113,7 @@ app.post('/api/submit-config', async (req, res) => {
       branchDurations,
       totalWorkTime,
     });
+
     onWorkCompleted(branchDurations, totalWorkTime, project, assigneeMessages, jiraUsername);
   } catch (error) {
     console.error('Error:', error);
