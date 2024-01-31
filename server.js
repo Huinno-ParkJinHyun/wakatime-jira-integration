@@ -215,8 +215,8 @@ cron.schedule(cronJobTime, async () => {
     const configFiles = await loadConfigFiles();
 
     if (configFiles.length === 0) {
-      console.log('No config files found');
-      console.log('프론트에서 설정을 저장해주세요.');
+      console.log('No config files found , 설정파일이 존재하지 않습니다.');
+      console.log('터미널에서 "npm run start" 를 입력하고 , 설정을 저장해주세요.');
       return;
     }
 
