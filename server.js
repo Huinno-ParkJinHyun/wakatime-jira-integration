@@ -177,7 +177,7 @@ function onWorkCompleted(branchDurations, totalWorkTime, project, assigneeMessag
   logMessages.push(`오늘 총 작업시간 (분단위): ${totalWorkTime}`);
 
   // 로그 파일에 추가
-  appendLog(logMessages.join('\n'), project, jiraUsername);
+  appendLog(logMessages.join('<br/>'), project, jiraUsername);
 }
 
 function getCurrentDateInKorea() {
